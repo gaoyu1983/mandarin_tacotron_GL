@@ -1,10 +1,12 @@
 # 数据集
-##标贝数据集
+标贝数据集
 https://weixinxcxdb.oss-cn-beijing.aliyuncs.com/gwYinPinKu/BZNSYP.rar
 
-##进行数据预处理
+进行数据预处理
 标贝数据集包含三个文件夹：wav里是10000个48kHz raw wave file，Prosody里的txt是拼音标注，用这两个就可以了
+
 在数据集文件夹下，执行python biaobei.py，得到trn文件。
+
 再修改preproess.py 执行 python preprocess.py --dataset biaobei
 
 
