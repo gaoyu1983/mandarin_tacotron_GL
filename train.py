@@ -6,6 +6,8 @@ import os
 import subprocess
 import time
 import tensorflow as tf
+from tensorflow import ConfigProto
+
 import traceback
 
 from datasets.datafeeder import DataFeeder
@@ -75,7 +77,11 @@ def train(log_dir, args):
   saver = tf.train.Saver(max_to_keep=1)
 
   # Train!
-  with tf.Session() as sess:
+  config = ConfigProto()
+  config.log_device_placement=True
+  config.gpu_options.allow_growth = True
+
+  with tf.Session(config=config) as sess:
     try:
       summary_writer = tf.summary.FileWriter(log_dir, sess.graph)
       sess.run(tf.global_variables_initializer())
