@@ -44,6 +44,10 @@ def run_eval(args):
   synth = Synthesizer()
   synth.load(args.checkpoint)
   base_path = get_output_base_path(args.checkpoint)
+  text = str.split(args.text, '~')
+  print(text)
+  for t in text:
+    sentences.append(text_to_pinyin(t))
   for i, text in enumerate(sentences):
     path = '%s-%03d.wav' % (base_path, i)
     print('Synthesizing: %s' % path)
@@ -57,8 +61,9 @@ def main():
   parser.add_argument('--hparams', default='',
     help='Hyperparameter overrides as a comma-separated list of name=value pairs')
   args = parser.parse_args()
+  parser.add_argument('--text', default='黑熊闯进王明辉家后院觅食~铁砂掌爱好者张辉表演劈砖')
   os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-  os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+  os.environ['CUDA_VISIBLE_DEVICES'] = '0'
   hparams.parse(args.hparams)
   run_eval(args)
 
