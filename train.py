@@ -55,7 +55,8 @@ def train(log_dir, args):
   log('Loading training data from: %s' % input_path)
   log('Using model: %s' % args.model)
   log(hparams_debug_string())
-
+  log('Tacotron training set to a maximum of {} steps'.format(args.tacotron_train_steps))
+  
   # Set up DataFeeder:
   coord = tf.train.Coordinator()
   with tf.variable_scope('datafeeder') as scope:
@@ -98,7 +99,7 @@ def train(log_dir, args):
 
       feeder.start_in_session(sess)
 
-      while not coord.should_stop():
+      while not coord.should_stop() and step < args.tacotron_train_steps:
         start_time = time.time()
         step, loss, opt = sess.run([global_step, model.loss, model.optimize])
         time_window.append(time.time() - start_time)
@@ -147,7 +148,9 @@ def main():
   parser.add_argument('--checkpoint_interval', type=int, default=1000,
     help='Steps between writing checkpoints.')
   parser.add_argument('--slack_url', help='Slack webhook URL to get periodic reports.')
-  parser.add_argument('--tf_log_level', type=int, default=1, help='Tensorflow C++ log level.')
+  parser.add_argument('--tf_log_level', type=int, default=2, help='Tensorflow C++ log level.')
+  parser.add_argument('--tacotron_train_steps', type=int, default=200000,
+    help='total number of tacotron training steps')
   parser.add_argument('--git', action='store_true', help='If set, verify that the client is clean.')
   args = parser.parse_args()
   os.environ['TF_CPP_MIN_LOG_LEVEL'] = str(args.tf_log_level)
