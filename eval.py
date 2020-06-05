@@ -60,8 +60,8 @@ def main():
   parser.add_argument('--checkpoint', required=True, help='Path to model checkpoint')
   parser.add_argument('--hparams', default='',
     help='Hyperparameter overrides as a comma-separated list of name=value pairs')
-  args = parser.parse_args()
   parser.add_argument('--text', default='黑熊闯进王明辉家后院觅食~铁砂掌爱好者张辉表演劈砖')
+  args = parser.parse_args()
   os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
   os.environ['CUDA_VISIBLE_DEVICES'] = '0'
   hparams.parse(args.hparams)
