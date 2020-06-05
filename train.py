@@ -127,7 +127,10 @@ def train(log_dir, args):
           plot.plot_alignment(alignment, os.path.join(log_dir, 'step-%d-align.png' % step),
             info='%s, %s, %s, step=%d, loss=%.5f' % (args.model, commit, time_string(), step, loss))
           log('Input: %s' % sequence_to_text(input_seq))
-
+          
+      log('Tacotron training complete after {} global steps!'.format(args.tacotron_train_steps), slack=True)
+      return 
+    
     except Exception as e:
       log('Exiting due to exception: %s' % e, slack=True)
       traceback.print_exc()
