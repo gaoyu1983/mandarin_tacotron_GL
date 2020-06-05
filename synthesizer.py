@@ -1,6 +1,7 @@
 import io
 import numpy as np
 import tensorflow as tf
+from tensorflow import ConfigProto
 from hparams import hparams
 from librosa import effects
 from models import create_model
@@ -19,7 +20,9 @@ class Synthesizer:
       self.wav_output = audio.inv_spectrogram_tensorflow(self.model.linear_outputs[0])
 
     print('Loading checkpoint: %s' % checkpoint_path)
-    self.session = tf.Session()
+    config = ConfigProto()
+    config.gpu_options.allow_growth = True
+    self.session = tf.Session(config=config)
     self.session.run(tf.global_variables_initializer())
     saver = tf.train.Saver()
     saver.restore(self.session, checkpoint_path)
